@@ -30,7 +30,8 @@
     "dev": "babel-watch --inspect src/index.js",
     "lint": "eslint ./src",
     "start": "node .",
-    "test": "ava"
+    "test": "ava",
+    "test:container": "docker-compose build && docker-compose run app yarn test && docker-compose down"
   },
   "devDependencies": {
     "ava": "^0.22.0",
