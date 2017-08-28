@@ -7,7 +7,9 @@
   "license": "MIT",
   "ava": {
     "babel": "inherit",
-    "require": ["babel-register"]
+    "require": [
+      "babel-register"
+    ]
   },
   "babel": {
     "presets": [
@@ -45,7 +47,6 @@
   "dependencies": {
     "axios": "^0.16.2",
     "rethinkdbdash": "^2.3.31",
-    "through2": "^2.0.3",
-    "ts-progress": "^0.1.4"
+    "through2": "^2.0.3"
   }
 }

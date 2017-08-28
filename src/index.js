@@ -1,6 +1,5 @@
 import axios from 'axios';
 import rethinkdbdash from 'rethinkdbdash';
-import progressBar from 'ts-progress';
 import { obj as objectStream } from 'through2';
 import defaultOptions from './defaultOptions';
 // import tableExists from './table-exists';
@@ -48,19 +47,11 @@ async function init(extraOptions) {
  * @param  {Function} transform (optional) A function to transform the document before storage in Elasticsearch
  */
 async function backfillTable({ db, table, transform }) {
-  const expectedLength = await r.db(db).table(table).count();
   const dataStream = r.db(db).table(table).toStream();
-  const progress = progressBar.create({
-    pattern: '{percent} {bar} | Elapsed: {elapsed} | ETA: {remaining}',
-    title: `Backfilling ${table}:${db}`,
-    total: expectedLength
-  });
 
   dataStream.pipe(
     objectStream((chunk, enc, cb) => {
       saveDocument({ db, document: chunk, table, transform });
-
-      progress.update();
       cb();
     })
   );
