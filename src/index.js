@@ -84,19 +84,20 @@ async function ensureConnections() {
  * Make sure table options are in the correct format
  */
 async function ensureTables(tables) {
-  if (!Array.isArray(tables)) {
-    throw new TypeError('`tables` must be an array of objects.');
-  }
-
-  const missingTables = tables.filter(async table => !await tableExists(table));
-
-  if (missingTables.length !== 0) {
-    const missingTableNames = missingTables
-      .map(({ db, table }) => `${db}:${table}`)
-      .join(', ');
-
-    throw new Error(`Table(s) ${missingTableNames} could not be found.`);
-  }
+  return true;
+  // if (!Array.isArray(tables)) {
+  //   throw new TypeError('`tables` must be an array of objects.');
+  // }
+  //
+  // const missingTables = tables.filter(async table => !await tableExists(table));
+  //
+  // if (missingTables.length !== 0) {
+  //   const missingTableNames = missingTables
+  //     .map(({ db, table }) => `${db}:${table}`)
+  //     .join(', ');
+  //
+  //   throw new Error(`Table(s) ${missingTableNames} could not be found.`);
+  // }
 }
 
 /**
@@ -108,13 +109,12 @@ async function ensureTables(tables) {
  */
 function saveDocument({ db, document, table, transform }) {
   // Transform the document if necessary
-  const documentToSave =
-    typeof transform === 'function'
-      ? transform({ db, document, table })
-      : document;
-
-  if (documentToSave == null) return;
-
+  // const documentToSave =
+  //   typeof transform === 'function'
+  //     ? transform({ db, document, table })
+  //     : document;
+  //
+  // if (documentToSave == null) return;
   // TODO: save document to Elasticsearch
   //
   // axios.post(`/${db}/${table}`, documentToSave, {
@@ -128,9 +128,9 @@ function saveDocument({ db, document, table, transform }) {
  * @param  {String} table The name of the table to check
  * @return {Boolean}       If the table exists in the database
  */
-async function tableExists({ db, table }) {
-  return r.db(db).tableList().contains(table);
-}
+// async function tableExists({ db, table }) {
+//   return r.db(db).tableList().contains(table);
+// }
 
 /**
  * Utility to create a URL string from an object representing parts of a URL
