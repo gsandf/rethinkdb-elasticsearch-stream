@@ -3,6 +3,7 @@ import rethinkdbdash from 'rethinkdbdash';
 import progressBar from 'ts-progress';
 import { obj as objectStream } from 'through2';
 import defaultOptions from './defaultOptions';
+// import tableExists from './table-exists';
 
 // The base URL for the Elasticsearch server
 let elasticsearchBaseUrl;
@@ -121,16 +122,6 @@ function saveDocument({ db, document, table, transform }) {
   //   baseURL: elasticsearchBaseUrl
   // });
 }
-
-/**
- * If the given table exists in the RethinkDB instance
- * @param  {String} db    The database containing the table
- * @param  {String} table The name of the table to check
- * @return {Boolean}       If the table exists in the database
- */
-// async function tableExists({ db, table }) {
-//   return r.db(db).tableList().contains(table);
-// }
 
 /**
  * Utility to create a URL string from an object representing parts of a URL
