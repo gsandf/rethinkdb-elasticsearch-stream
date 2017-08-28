@@ -1,5 +1,8 @@
 language: node_js
 
+node_js:
+  - 'node'
+
 sudo: required
 
 # Skip install process.  Everything will be done in Docker.
