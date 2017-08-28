@@ -9,7 +9,7 @@ let elasticsearchBaseUrl;
 // A handle to the RethinkDB driver instance
 let r;
 
-function init(extraOptions) {
+async function init(extraOptions) {
   const options = {
     ...defaultOptions,
     ...extraOptions
@@ -18,8 +18,13 @@ function init(extraOptions) {
   elasticsearchBaseUrl = urlString(options.elasticsearch);
   r = rethinkdbdash(options.rethinkdb);
 
-  ensureConnections(options.elasticsearch);
-  ensureTables(options.tables);
+  try {
+    ensureConnections(options.elasticsearch);
+    await ensureTables(options.tables);
+  } catch (e) {
+    console.error(e.message);
+    return cleanup();
+  }
 
   if (options.watch) {
     options.tables.forEach(watchTable);
@@ -27,6 +32,11 @@ function init(extraOptions) {
 
   if (options.backfill) {
     options.tables.forEach(backfillTable);
+  }
+
+  // If nothing is to be done, cleanup connections and exit
+  if (!options.watch && !options.backfill) {
+    cleanup();
   }
 }
 
@@ -55,6 +65,10 @@ async function backfillTable({ db, table, transform }) {
   );
 }
 
+async function cleanup() {
+  return r.getPoolMaster().drain();
+}
+
 /**
  * Make sure a connection can be made to the services needed.
  */
@@ -69,19 +83,19 @@ async function ensureConnections() {
 /**
  * Make sure table options are in the correct format
  */
-function ensureTables(tables) {
+async function ensureTables(tables) {
   if (!Array.isArray(tables)) {
     throw new TypeError('`tables` must be an array of objects.');
   }
 
-  const missingTables = tables.filter(table => !tableExists(table));
+  const missingTables = tables.filter(async table => !await tableExists(table));
 
   if (missingTables.length !== 0) {
     const missingTableNames = missingTables
       .map(({ db, table }) => `${db}:${table}`)
       .join(', ');
 
-    throw new Error(`Tables "${missingTableNames}" could not be found.`);
+    throw new Error(`Table(s) ${missingTableNames} could not be found.`);
   }
 }
 
