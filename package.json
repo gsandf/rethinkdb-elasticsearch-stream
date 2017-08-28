@@ -22,7 +22,7 @@
     "extends": "gsandf"
   },
   "scripts": {
-    "build": "babel src --out-dir dist",
+    "build": "babel src --out-dir build",
     "dev": "babel-watch --inspect src/index.js",
     "lint": "eslint ./src",
     "test": "yarn lint"
