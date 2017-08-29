@@ -14,7 +14,13 @@ function backfillTable(r, { db, table, ...properties }) {
     dataStream
       .pipe(
         objectStream(async (chunk, enc, cb) => {
-          await saveDocument({ db, document: chunk, table, ...properties });
+          await saveDocument({
+            db,
+            document: chunk,
+            table,
+            ...properties
+          });
+
           cb();
         })
       )
