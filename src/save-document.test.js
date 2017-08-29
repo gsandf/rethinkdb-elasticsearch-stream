@@ -30,6 +30,22 @@ test('saveDocument: upsert a document to Elasticsearch', async t => {
   t.is(data._id, testData.document.id);
 });
 
+test('saveDocument: insert a document without an id', async t => {
+  nock(testData.baseURL)
+    .put('/cool-people/ent')
+    .reply(200, elasticsearchInsertMock);
+
+  const newTestData = { ...testData };
+  delete newTestData.idKey;
+
+  const response = await saveDocument(newTestData);
+  t.is(response.status, 200);
+
+  const { data } = response;
+  t.is(data._index, testData.db);
+  t.is(data._type, testData.table);
+});
+
 test('saveDocument: transform document before saving', async t => {
   const extraDocumentInfo = {
     title: 'Shepherd of the Trees, Oldest of the Ents'
