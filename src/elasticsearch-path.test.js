@@ -20,6 +20,13 @@ test('elasticsearchPath: return path with db and table if both supplied', t => {
   t.is(elasticsearchPath({ db: 'pets', table: 'goats' }), '/pets/goats');
 });
 
+test('elasticsearchPath: return path with db, table, and id if all supplied', t => {
+  t.is(
+    elasticsearchPath({ db: 'pets', id: 'awesome-goat', table: 'goats' }),
+    '/pets/goats/awesome-goat'
+  );
+});
+
 test('elasticsearchPath: should only accept string types', t => {
   t.throws(() => elasticsearchPath({ db: 43 }), TypeError);
   t.throws(() => elasticsearchPath({ table: NaN }), TypeError);
