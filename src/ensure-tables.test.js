@@ -1,8 +1,8 @@
 import test from 'ava';
 import rethinkdbdash from 'rethinkdbdash';
 import ensureTables from './ensure-tables';
+import { rethinkdb as rethinkSettings } from './test-helpers';
 
-const rethinkSettings = { host: 'rethinkdb', port: 28015, silent: true };
 const r = rethinkdbdash(rethinkSettings);
 
 test('ensureTables ensures tables are correct format', async t => {
