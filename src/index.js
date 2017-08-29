@@ -2,6 +2,7 @@ import axios from 'axios';
 import rethinkdbdash from 'rethinkdbdash';
 import { obj as objectStream } from 'through2';
 import defaultOptions from './defaultOptions';
+import elasticsearchPath from './elasticsearch-path';
 import ensureTables from './ensure-tables';
 import urlString from './url-string';
 
@@ -82,17 +83,16 @@ async function ensureConnections() {
  */
 function saveDocument({ db, document, table, transform }) {
   // Transform the document if necessary
-  // const documentToSave =
-  //   typeof transform === 'function'
-  //     ? transform({ db, document, table })
-  //     : document;
-  //
-  // if (documentToSave == null) return;
-  // TODO: save document to Elasticsearch
-  //
-  // axios.post(`/${db}/${table}`, documentToSave, {
-  //   baseURL: elasticsearchBaseUrl
-  // });
+  const documentToSave =
+    typeof transform === 'function'
+      ? transform({ db, document, table })
+      : document;
+
+  if (documentToSave == null) return;
+
+  axios.post(elasticsearchPath({ db, table }), documentToSave, {
+    baseURL: elasticsearchBaseUrl
+  });
 }
 
 /**
