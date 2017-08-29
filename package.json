@@ -7,7 +7,9 @@
   "license": "MIT",
   "ava": {
     "babel": "inherit",
-    "require": ["babel-register"]
+    "require": [
+      "babel-register"
+    ]
   },
   "babel": {
     "presets": [
@@ -40,6 +42,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.5.0",
     "eslint-config-gsandf": "^0.3.0",
+    "nock": "^9.0.14",
     "prettier-eslint-cli": "^4.2.1"
   },
   "dependencies": {
