@@ -2,6 +2,7 @@ import axios from 'axios';
 import rethinkdbdash from 'rethinkdbdash';
 import { obj as objectStream } from 'through2';
 import defaultOptions from './defaultOptions';
+import elasticsearchPath from './elasticsearch-path';
 import ensureTables from './ensure-tables';
 import urlString from './url-string';
 
@@ -88,9 +89,8 @@ function saveDocument({ db, document, table, transform }) {
       : document;
 
   if (documentToSave == null) return;
-  // TODO: save document to Elasticsearch
 
-  axios.post(`/${db}/${table}`, documentToSave, {
+  axios.post(elasticsearchPath({ db, table }), documentToSave, {
     baseURL: elasticsearchBaseUrl
   });
 }
