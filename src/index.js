@@ -3,7 +3,7 @@ import rethinkdbdash from 'rethinkdbdash';
 import { obj as objectStream } from 'through2';
 import defaultOptions from './defaultOptions';
 import ensureTables from './ensure-tables';
-// import tableExists from './table-exists';
+import urlString from './url-string';
 
 // The base URL for the Elasticsearch server
 let elasticsearchBaseUrl;
@@ -93,13 +93,6 @@ function saveDocument({ db, document, table, transform }) {
   // axios.post(`/${db}/${table}`, documentToSave, {
   //   baseURL: elasticsearchBaseUrl
   // });
-}
-
-/**
- * Utility to create a URL string from an object representing parts of a URL
- */
-function urlString({ host, port, protocol = 'http' }) {
-  return `${protocol}://${host}:${port}`;
 }
 
 /**
