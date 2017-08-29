@@ -50,4 +50,5 @@ test('backfillTable: copies every row in table', async t => {
 
   await backfillTable(r, { baseURL, db, idKey: 'id', table });
   expectedCalls.forEach(call => t.true(call.isDone()));
+  await r.dbDrop(db);
 });
