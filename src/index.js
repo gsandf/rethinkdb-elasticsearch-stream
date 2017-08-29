@@ -82,17 +82,17 @@ async function ensureConnections() {
  */
 function saveDocument({ db, document, table, transform }) {
   // Transform the document if necessary
-  // const documentToSave =
-  //   typeof transform === 'function'
-  //     ? transform({ db, document, table })
-  //     : document;
-  //
-  // if (documentToSave == null) return;
+  const documentToSave =
+    typeof transform === 'function'
+      ? transform({ db, document, table })
+      : document;
+
+  if (documentToSave == null) return;
   // TODO: save document to Elasticsearch
-  //
-  // axios.post(`/${db}/${table}`, documentToSave, {
-  //   baseURL: elasticsearchBaseUrl
-  // });
+
+  axios.post(`/${db}/${table}`, documentToSave, {
+    baseURL: elasticsearchBaseUrl
+  });
 }
 
 /**
