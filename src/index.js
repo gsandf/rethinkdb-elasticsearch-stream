@@ -2,6 +2,7 @@ import axios from 'axios';
 import rethinkdbdash from 'rethinkdbdash';
 import { obj as objectStream } from 'through2';
 import defaultOptions from './defaultOptions';
+import ensureTables from './ensure-tables';
 // import tableExists from './table-exists';
 
 // The base URL for the Elasticsearch server
@@ -20,7 +21,7 @@ async function init(extraOptions) {
 
   try {
     ensureConnections(options.elasticsearch);
-    await ensureTables(options.tables);
+    await ensureTables(r, options.tables);
   } catch (e) {
     console.error(e.message);
     return cleanup();
@@ -70,26 +71,6 @@ async function ensureConnections() {
   const elasticsearchHealthy =
     typeof elasticsearchResponse.data.cluster_uuid === 'string';
   return elasticsearchHealthy;
-}
-
-/**
- * Make sure table options are in the correct format
- */
-async function ensureTables(tables) {
-  return true;
-  // if (!Array.isArray(tables)) {
-  //   throw new TypeError('`tables` must be an array of objects.');
-  // }
-  //
-  // const missingTables = tables.filter(async table => !await tableExists(table));
-  //
-  // if (missingTables.length !== 0) {
-  //   const missingTableNames = missingTables
-  //     .map(({ db, table }) => `${db}:${table}`)
-  //     .join(', ');
-  //
-  //   throw new Error(`Table(s) ${missingTableNames} could not be found.`);
-  // }
 }
 
 /**
