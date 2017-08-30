@@ -1,9 +1,6 @@
 import test from 'ava';
-import rethinkdbdash from 'rethinkdbdash';
 import ensureTables from './ensure-tables';
-import { rethinkdb as rethinkSettings } from './test-helpers';
-
-const r = rethinkdbdash(rethinkSettings);
+import { r } from './test-helpers';
 
 test('ensureTables ensures tables are correct format', async t => {
   await t.throws(ensureTables(), TypeError);

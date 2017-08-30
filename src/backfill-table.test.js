@@ -1,13 +1,10 @@
 import test from 'ava';
 import nock from 'nock';
-import rethinkdbdash from 'rethinkdbdash';
 import backfillTable from './backfill-table';
 import elasticsearchPath from './elasticsearch-path';
-import { rethinkdb as rethinkSettings } from './test-helpers';
+import { elasticsearch, r } from './test-helpers';
 
-const r = rethinkdbdash(rethinkSettings);
-
-const baseURL = 'http://elastic:9200';
+const baseURL = elasticsearch.url;
 
 const testData = [
   {

@@ -1,9 +1,6 @@
 import test from 'ava';
-import rethinkdbdash from 'rethinkdbdash';
 import tableExists from './table-exists';
-import { rethinkdb as rethinkSettings } from './test-helpers';
-
-const r = rethinkdbdash(rethinkSettings);
+import { r } from './test-helpers';
 
 test('tableExists: true if table exists; false otherwise', async t => {
   const db = 'tableExistsTest1';

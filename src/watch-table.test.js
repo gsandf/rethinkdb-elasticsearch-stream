@@ -1,13 +1,9 @@
 import test from 'ava';
 import nock from 'nock';
-import rethinkdbdash from 'rethinkdbdash';
-import watchTable from './watch-table';
+import delay from './delay';
 import elasticsearchPath from './elasticsearch-path';
-import { rethinkdb as rethinkSettings } from './test-helpers';
-
-const r = rethinkdbdash(rethinkSettings);
-
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+import { r } from './test-helpers';
+import watchTable from './watch-table';
 
 const baseURL = 'http://elastic:9200';
 
