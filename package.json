@@ -30,6 +30,7 @@
   "scripts": {
     "build": "babel src --out-dir build",
     "coverage": "nyc ava",
+    "coverage:container": "docker-compose build && docker-compose run app yarn coverage; docker-compose down",
     "dev": "babel-watch --inspect src/index.js",
     "lint": "eslint ./src",
     "start": "node .",
