@@ -11,4 +11,4 @@ services:
 script:
   - yarn lint
   - docker-compose build
-  - docker-compose run app yarn test
+  - docker-compose run -e CI app yarn test
