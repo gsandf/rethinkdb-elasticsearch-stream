@@ -7,7 +7,9 @@
   "license": "MIT",
   "ava": {
     "babel": "inherit",
-    "require": ["babel-register"]
+    "require": [
+      "babel-register"
+    ]
   },
   "babel": {
     "presets": [
@@ -27,11 +29,14 @@
   },
   "scripts": {
     "build": "babel src --out-dir build",
+    "container": "docker-compose run app",
+    "coverage": "nyc ava",
+    "coverage:container": "docker-compose build && docker-compose run app yarn coverage; docker-compose down",
     "dev": "babel-watch --inspect src/index.js",
     "lint": "eslint ./src",
     "start": "node .",
     "test": "ava",
-    "test:container": "docker-compose build && docker-compose run app yarn test; docker-compose down"
+    "test:container": "docker-compose build && docker-compose run app yarn test -- -v; docker-compose down"
   },
   "devDependencies": {
     "ava": "^0.22.0",
@@ -40,6 +45,9 @@
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.5.0",
     "eslint-config-gsandf": "^0.3.0",
+    "nock": "^9.0.14",
+    "nyc": "^11.1.0",
+    "p-retry": "^1.0.0",
     "prettier-eslint-cli": "^4.2.1"
   },
   "dependencies": {

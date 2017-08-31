@@ -4,7 +4,7 @@
  * @param  {String} [table='' }] A type (or table)
  * @return {[String]}            The path to query against or save to
  */
-function elasticsearchPath({ db = '', table = '' } = {}) {
+function elasticsearchPath({ db = '', id = '', table = '' } = {}) {
   // If `db` or `table` are not strings, that's probably a mistake
   if (typeof db !== 'string') {
     throw new TypeError('`db` should be a string');
@@ -27,7 +27,11 @@ function elasticsearchPath({ db = '', table = '' } = {}) {
     return `/${db}`;
   }
 
-  return `/${db}/${table}`;
+  if (id == null || id === '') {
+    return `/${db}/${table}`;
+  }
+
+  return `/${db}/${table}/${id}`;
 }
 
 export default elasticsearchPath;

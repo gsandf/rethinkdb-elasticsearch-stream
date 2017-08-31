@@ -1,9 +1,6 @@
 import test from 'ava';
-import rethinkdbdash from 'rethinkdbdash';
 import ensureTables from './ensure-tables';
-
-const rethinkSettings = { host: 'rethinkdb', port: 28015, silent: true };
-const r = rethinkdbdash(rethinkSettings);
+import { r } from './test-helpers';
 
 test('ensureTables ensures tables are correct format', async t => {
   await t.throws(ensureTables(), TypeError);
@@ -17,7 +14,7 @@ test('ensureTables ensures tables exist', async t => {
   // Tables do not exist yet
   await t.throws(ensureTables(r, tables));
 
-  await r.dbCreate('ensureTables1');
+  await r.dbCreate(db);
 
   await r.db(db).tableCreate('testTable1');
 
@@ -28,4 +25,6 @@ test('ensureTables ensures tables exist', async t => {
 
   // Ensuring tables should be fine now
   t.is(await ensureTables(r, tables), undefined);
+
+  await r.dbDrop(db);
 });
