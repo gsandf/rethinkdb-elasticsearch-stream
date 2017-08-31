@@ -20,12 +20,12 @@ export default [
   // Table 2
   [
     {
-      id: 'abc-1',
-      name: 'Treebeard'
+      name: 'Treebeard',
+      uid: 'abc-1'
     },
     {
-      id: 'abc-2',
-      name: 'Legolas'
+      name: 'Legolas',
+      uid: 'abc-2'
     }
   ]
 ];
