@@ -8,7 +8,11 @@ import saveDocument from './save-document';
 * @param  {String}   table     The table in RethinkDB to stream updates from
 */
 function watchTable(r, { db, table, ...properties }) {
-  const dataStream = r.db(db).table(table).changes().toStream();
+  const dataStream = r
+    .db(db)
+    .table(table)
+    .changes()
+    .toStream();
 
   return dataStream.pipe(
     objectStream(async ({ new_val: chunk }, enc, cb) => {

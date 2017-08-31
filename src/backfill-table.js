@@ -9,7 +9,10 @@ import saveDocument from './save-document';
  */
 function backfillTable(r, { db, table, ...properties }) {
   return new Promise((resolve, reject) => {
-    const dataStream = r.db(db).table(table).toStream();
+    const dataStream = r
+      .db(db)
+      .table(table)
+      .toStream();
 
     dataStream
       .pipe(

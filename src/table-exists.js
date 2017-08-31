@@ -8,7 +8,10 @@ async function tableExists({ r, db, table }) {
   const hasDB = await r.dbList().contains(db);
 
   if (hasDB) {
-    return r.db(db).tableList().contains(table);
+    return r
+      .db(db)
+      .tableList()
+      .contains(table);
   }
 
   return false;

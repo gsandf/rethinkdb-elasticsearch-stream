@@ -37,7 +37,10 @@ test('backfillTable: copies every row in table', async t => {
 
   await r.dbCreate(db);
   await r.db(db).tableCreate(table);
-  await r.db(db).table(table).insert(testData);
+  await r
+    .db(db)
+    .table(table)
+    .insert(testData);
 
   const expectedCalls = testData.map(({ id }) =>
     nock(baseURL)
