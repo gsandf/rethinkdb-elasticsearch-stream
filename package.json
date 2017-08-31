@@ -29,13 +29,14 @@
   },
   "scripts": {
     "build": "babel src --out-dir build",
+    "container": "docker-compose run app",
     "coverage": "nyc ava",
     "coverage:container": "docker-compose build && docker-compose run app yarn coverage; docker-compose down",
     "dev": "babel-watch --inspect src/index.js",
     "lint": "eslint ./src",
     "start": "node .",
     "test": "ava",
-    "test:container": "docker-compose build && docker-compose run app yarn test; docker-compose down"
+    "test:container": "docker-compose build && docker-compose run app yarn test -- -v; docker-compose down"
   },
   "devDependencies": {
     "ava": "^0.22.0",
