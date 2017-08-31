@@ -14,7 +14,7 @@ test('ensureTables ensures tables exist', async t => {
   // Tables do not exist yet
   await t.throws(ensureTables(r, tables));
 
-  await r.dbCreate('ensureTables1');
+  await r.dbCreate(db);
 
   await r.db(db).tableCreate('testTable1');
 
@@ -25,4 +25,6 @@ test('ensureTables ensures tables exist', async t => {
 
   // Ensuring tables should be fine now
   t.is(await ensureTables(r, tables), undefined);
+
+  await r.dbDrop(db);
 });
