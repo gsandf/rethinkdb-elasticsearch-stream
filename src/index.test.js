@@ -3,6 +3,7 @@ import elasticsearchPath from './elasticsearch-path';
 import test from 'ava';
 import retry from 'p-retry';
 import defaultOptions from './defaultOptions';
+import delay from './delay';
 import { data as testData, elasticsearch, r, rethinkdb } from './test-helpers';
 import elasticsearchStream from '.';
 
@@ -79,8 +80,14 @@ test('can backfill tables from RethinkDB to elasticsearch', async t => {
   await r.dbCreate(db2);
   await r.db(db1).tableCreate(tableName);
   await r.db(db2).tableCreate(tableName);
-  await r.db(db1).table(tableName).insert(testData[0]);
-  await r.db(db2).table(tableName).insert(testData[1]);
+  await r
+    .db(db1)
+    .table(tableName)
+    .insert(testData[0]);
+  await r
+    .db(db2)
+    .table(tableName)
+    .insert(testData[1]);
 
   await elasticsearchStream({
     ...options,
@@ -92,6 +99,82 @@ test('can backfill tables from RethinkDB to elasticsearch', async t => {
     (accum, testInfo, i) => [
       ...accum,
       ...testData[i].map(document => ({
+        baseURL: elasticsearch.url,
+        document,
+        ...testInfo
+      }))
+    ],
+    []
+  );
+
+  const storedData = await r
+    .db(db1)
+    .table(tableName)
+    .union(r.db(db2).table(tableName));
+
+  const expectedData = tests.map(
+    t =>
+      t.transform
+        ? t.transform({
+          ...t,
+          document: storedData.find(s => s[t.idKey] === t.document[t.idKey])
+        })
+        : t.document
+  );
+
+  const actualData = await Promise.all(tests.map(elasticsearchSource));
+
+  t.deepEqual(expectedData, actualData);
+});
+
+test('can add changes from RethinkDB to elasticsearch', async t => {
+  const dbPrefix = 'index_test_watch_db';
+  const tableName = 'dattabletho';
+
+  const testTableInfo = [
+    {
+      db: `${dbPrefix}_1`,
+      idKey: 'id',
+      table: tableName
+    },
+    {
+      db: `${dbPrefix}_2`,
+      idKey: 'uid',
+      table: tableName,
+      transform: ({ document }) => ({ ...document, didTransform: true })
+    }
+  ];
+
+  // Create tables...
+  const [db1, db2] = testTableInfo.map(t => t.db);
+  await r.dbCreate(db1);
+  await r.dbCreate(db2);
+  await r.db(db1).tableCreate(tableName);
+  await r.db(db2).tableCreate(tableName);
+
+  await elasticsearchStream({
+    ...options,
+    backfill: false,
+    tables: testTableInfo
+  });
+
+  await delay(500);
+
+  await r
+    .db(db1)
+    .table(tableName)
+    .insert(testData[2]);
+  await r
+    .db(db2)
+    .table(tableName)
+    .insert(testData[3]);
+
+  await delay(2000);
+
+  const tests = testTableInfo.reduce(
+    (accum, testInfo, i) => [
+      ...accum,
+      ...testData[i + 2].map(document => ({
         baseURL: elasticsearch.url,
         document,
         ...testInfo

@@ -43,7 +43,10 @@ test('watchTable: copies every row in table', async t => {
   watchTable(r, { baseURL, db, idKey: 'id', table });
 
   await delay(200);
-  await r.db(db).table(table).insert(testData);
+  await r
+    .db(db)
+    .table(table)
+    .insert(testData);
 
   await delay(100);
   t.true(expectedCalls.every(call => call.isDone()));
