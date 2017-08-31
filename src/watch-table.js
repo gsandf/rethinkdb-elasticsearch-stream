@@ -12,12 +12,16 @@ function watchTable(r, { db, table, ...properties }) {
 
   return dataStream.pipe(
     objectStream(async ({ new_val: chunk }, enc, cb) => {
-      saveDocument({
-        db,
-        document: chunk,
-        table,
-        ...properties
-      });
+      try {
+        await saveDocument({
+          db,
+          document: chunk,
+          table,
+          ...properties
+        });
+      } catch (e) {
+        cb(e);
+      }
 
       cb();
     })
