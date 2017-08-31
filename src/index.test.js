@@ -24,7 +24,14 @@ const elasticsearchSource = async tableInfo => {
 
 test.before(async () => {
   // Ensure the Elasticsearch container is ready
-  await retry(async () => axios.get(elasticsearch.url), { retries: 5 });
+  const retries = 5;
+  await retry(
+    async attempt => {
+      console.log(`Connecting to Elasticsearch (try ${attempt}/${retries})`);
+      return axios.get(elasticsearch.url);
+    },
+    { retries }
+  );
 });
 
 test('if nothing provided to do, just verifies a connection to the databases', async t => {
