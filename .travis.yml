@@ -8,6 +8,9 @@ sudo: required
 services:
   - docker
 
+before_script:
+  - sleep 10
+
 script:
   - yarn lint
   - docker-compose build

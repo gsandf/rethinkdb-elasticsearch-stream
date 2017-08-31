@@ -24,7 +24,7 @@ const elasticsearchSource = async tableInfo => {
 
 test.before(async () => {
   // Ensure the Elasticsearch container is ready
-  const retries = 9;
+  const retries = 6;
   await retry(
     async attempt => {
       console.log(
