@@ -32,7 +32,7 @@ test('saveDocument: upsert a document to Elasticsearch', async t => {
 
 test('saveDocument: insert a document without an id', async t => {
   nock(testData.baseURL)
-    .put('/cool-people/ent')
+    .post('/cool-people/ent')
     .reply(200, elasticsearchInsertMock);
 
   const newTestData = { ...testData };

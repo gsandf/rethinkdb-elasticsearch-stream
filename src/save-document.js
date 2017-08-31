@@ -29,7 +29,11 @@ async function saveDocument({
     table
   });
 
-  return axios.put(path, documentToSave, { baseURL });
+  if (idKey) {
+    return axios.put(path, documentToSave, { baseURL });
+  }
+
+  return axios.post(path, documentToSave, { baseURL });
 }
 
 export default saveDocument;
