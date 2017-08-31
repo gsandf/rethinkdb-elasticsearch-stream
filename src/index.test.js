@@ -24,10 +24,12 @@ const elasticsearchSource = async tableInfo => {
 
 test.before(async () => {
   // Ensure the Elasticsearch container is ready
-  const retries = 10;
+  const retries = 9;
   await retry(
     async attempt => {
-      console.log(`Connecting to Elasticsearch (try ${attempt}/${retries})`);
+      console.log(
+        `Connecting to Elasticsearch (try ${attempt}/${retries + 1})`
+      );
       return axios.get(elasticsearch.url);
     },
     { retries }
