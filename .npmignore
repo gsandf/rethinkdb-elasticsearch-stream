@@ -1,0 +1,7 @@
+# Unbuilt source
+src/
+
+# Logs
+logs
+*.log
+npm-debug.log*
