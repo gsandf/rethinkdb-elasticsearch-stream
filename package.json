@@ -28,7 +28,7 @@
     "extends": "gsandf"
   },
   "scripts": {
-    "build": "babel src --out-dir build --ignore '**/*.test.js' --ignore 'test-helpers/'",
+    "build": "babel src --out-dir build",
     "container": "docker-compose run app",
     "coverage": "nyc ava",
     "coverage:container": "docker-compose build && docker-compose run app yarn coverage; docker-compose down",
