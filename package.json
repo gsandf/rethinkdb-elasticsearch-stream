@@ -36,7 +36,7 @@
     "lint": "eslint ./src",
     "prepublish": "yarn build",
     "start": "node .",
-    "test": "ava",
+    "test": "cd src && ava",
     "test:container": "docker-compose build && docker-compose run app yarn test -- -v; docker-compose down"
   },
   "devDependencies": {
