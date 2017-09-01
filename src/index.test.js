@@ -158,7 +158,7 @@ test('can add changes from RethinkDB to elasticsearch', async t => {
     tables: testTableInfo
   });
 
-  await delay(500);
+  await delay(1000);
 
   await r
     .db(db1)
