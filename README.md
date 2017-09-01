@@ -74,10 +74,11 @@ await rethinkdbElasticsearchStream({
 
 ## Install
 
-With [npm](https://npmjs.org/) installed, run
+With [Yarn](https://yarnpkg.com/en/) _or_ [npm](https://npmjs.org/) installed, run:
 
 ```bash
 yarn add rethinkdb-elasticsearch-stream
+
 # ...or, if using `npm`
 npm install rethinkdb-elasticsearch-stream
 ```
