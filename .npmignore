@@ -1,7 +1,5 @@
 # Unbuilt source
 src/
-*.test.js
-test-helpers
 
 # Logs
 logs
