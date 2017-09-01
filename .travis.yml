@@ -3,13 +3,12 @@ language: node_js
 node_js:
   - 'node'
 
+cache: yarn
+
 sudo: required
 
 services:
   - docker
-
-before_script:
-  - sleep 10
 
 script:
   - yarn lint
