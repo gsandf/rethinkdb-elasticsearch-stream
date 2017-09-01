@@ -7,7 +7,7 @@
 
 A JavaScript-based replacement for the deprecated [Elasticsearch RethinkDB River](https://github.com/rethinkdb/elasticsearch-river-rethinkdb) plugin.  This can populate your Elasticsearch instance using data from a RethinkDB instance, keep it up to date using changefeeds, and allow you to modify the documents before they're copied.
 
-** ✨ Features: **
+**✨ Features:**
 
 - **Simple:** specify connections and tables to copy as-is to Elasticsearch
 - **Flexible:** accepts a transform function for each table to modify what's copied
