@@ -1,5 +1,5 @@
 export default {
-  // If the Elasticsearch instance should be populated with the existing RethinkDB data
+  // If the Elasticsearch instance should be populated with existing RethinkDB data
   backfill: true,
 
   // Connection details for an Elasticsearch instance
