@@ -34,6 +34,7 @@
     "coverage:container": "docker-compose build && docker-compose run app yarn coverage; docker-compose down",
     "dev": "babel-watch --inspect src/index.js",
     "lint": "eslint ./src",
+    "prepublish": "yarn build",
     "start": "node .",
     "test": "ava",
     "test:container": "docker-compose build && docker-compose run app yarn test -- -v; docker-compose down"
