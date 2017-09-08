@@ -91,3 +91,32 @@ test('saveDocument: do not save empty documents', async t => {
 
   t.falsy(response);
 });
+
+test('saveDocument: insert array of documents', async t => {
+  const arrayTest = {
+    ...testData,
+    document: [
+      {
+        id: '233',
+        name: 'Test Name 1'
+      },
+      {
+        id: '234',
+        name: 'Test Name 2'
+      }
+    ]
+  };
+  nock(testData.baseURL)
+    .put(/\/cool-people\/ent\/\d{3}/)
+    .times(2)
+    .reply(200, elasticsearchInsertMock);
+
+  const responses = await saveDocument(arrayTest);
+  responses.map((response, i) => {
+    t.is(response.status, 200);
+    const { data } = response;
+    t.is(data._index, arrayTest.db);
+    t.is(data._type, arrayTest.table);
+    t.is(data._id, arrayTest.document[i].id);
+  });
+});
