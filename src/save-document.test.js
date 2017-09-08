@@ -65,6 +65,22 @@ test('saveDocument: transform document before saving', async t => {
   t.is(response.status, 200);
 });
 
+test('saveDocument: change es type', async t => {
+  const esType = 'test';
+
+  nock(testData.baseURL)
+    .put(`/cool-people/${esType}/123`)
+    .reply(200, elasticsearchInsertMock);
+
+  const response = await saveDocument({
+    ...testData,
+    esType
+  });
+
+  const { data } = response;
+  t.is(data._type, esType);
+});
+
 test('saveDocument: do not save null documents', async t => {
   const response = await saveDocument({
     ...testData,
