@@ -22,20 +22,31 @@ async function saveDocument({
   const documentToSave =
     transform != null ? await transform({ db, document, table }) : document;
 
-  if (documentToSave == null) return;
-  if (Object.keys(documentToSave).length === 0) return;
+  if (Array.isArray(documentToSave)) {
+    return Promise.all(
+      documentToSave.map(d =>
+        pushDocument(baseURL, db, d, idKey, esType || table)
+      )
+    );
+  }
+  return pushDocument(baseURL, db, documentToSave, idKey, esType || table);
+}
+
+function pushDocument(baseURL, db, doc, idKey, table) {
+  if (doc == null) return;
+  if (Object.keys(doc).length === 0) return;
 
   const path = elasticsearchPath({
     db,
-    id: idKey ? documentToSave[idKey] : null,
-    table: esType || table
+    id: idKey ? doc[idKey] : null,
+    table
   });
 
   if (idKey) {
-    return axios.put(path, documentToSave, { baseURL });
+    return axios.put(path, doc, { baseURL });
   }
 
-  return axios.post(path, documentToSave, { baseURL });
+  return axios.post(path, doc, { baseURL });
 }
 
 export default saveDocument;
