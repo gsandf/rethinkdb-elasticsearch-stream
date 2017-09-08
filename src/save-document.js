@@ -5,6 +5,7 @@ import elasticsearchPath from './elasticsearch-path';
  * Replicate a document in Elasticsearch
  * @param  {String}   db        The database in RethinkDB the document resides in (used as Elasticsearch index)
  * @param  {Object}   document  The document to save.  This may be transformed by `transform`.
+ * @param  {String}   esType    The Elasticsearch type where the document will be stored (defaults to RethinkDB table name)
  * @param  {String}   table     The table in RethinkDB the document resides in (used as Elasticsearch type)
  * @param  {Function} transform (optional) A function or promise to transform the document before storage in Elasticsearch
  */
@@ -12,6 +13,7 @@ async function saveDocument({
   baseURL,
   db,
   document,
+  esType,
   idKey,
   table,
   transform
@@ -22,10 +24,12 @@ async function saveDocument({
 
   if (Array.isArray(documentToSave)) {
     return Promise.all(
-      documentToSave.map(d => pushDocument(baseURL, db, d, idKey, table))
+      documentToSave.map(d =>
+        pushDocument(baseURL, db, d, idKey, esType || table)
+      )
     );
   }
-  return pushDocument(baseURL, db, documentToSave, idKey, table);
+  return pushDocument(baseURL, db, documentToSave, idKey, esType || table);
 }
 
 function pushDocument(baseURL, db, doc, idKey, table) {
