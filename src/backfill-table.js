@@ -5,9 +5,10 @@ import saveDocument from './save-document';
  * Fill an Elasticsearch type with the contents of a RethinkDB table
  * @param  {String}   r         A handle to the RethinkDB driver
  * @param  {String}   db        The database in RethinkDB to duplicate
+ * @param  {String}   destTable The Elasticsearch type to store the document (defaults to RedthinkDB table name)
  * @param  {String}   table     The table in RethinkDB to duplicate
  */
-function backfillTable(r, { db, table, ...properties }) {
+function backfillTable(r, { db, destTable, table, ...properties }) {
   return new Promise((resolve, reject) => {
     const dataStream = r
       .db(db)
@@ -21,7 +22,7 @@ function backfillTable(r, { db, table, ...properties }) {
             await saveDocument({
               db,
               document: chunk,
-              table,
+              table: destTable || table,
               ...properties
             });
           } catch (e) {

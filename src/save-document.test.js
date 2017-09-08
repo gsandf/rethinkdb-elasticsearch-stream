@@ -65,6 +65,22 @@ test('saveDocument: transform document before saving', async t => {
   t.is(response.status, 200);
 });
 
+test('saveDocument: change dest table', async t => {
+  const destTable = 'test';
+
+  nock(testData.baseURL)
+    .put(`/cool-people/${destTable}/123`)
+    .reply(200, elasticsearchInsertMock);
+
+  const response = await saveDocument({
+    ...testData,
+    destTable
+  });
+
+  const { data } = response;
+  t.is(data._type, destTable);
+});
+
 test('saveDocument: do not save null documents', async t => {
   const response = await saveDocument({
     ...testData,
