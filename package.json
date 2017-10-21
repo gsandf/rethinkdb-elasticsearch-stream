@@ -52,7 +52,7 @@
     "prettier-eslint-cli": "^4.2.1"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.17.0",
     "rethinkdbdash": "^2.3.31",
     "through2": "^2.0.3"
   }
