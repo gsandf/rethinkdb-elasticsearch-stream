@@ -45,7 +45,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.5.0",
-    "eslint-config-gsandf": "^0.3.0",
+    "eslint-config-gsandf": "^0.4.0",
     "nock": "^9.0.14",
     "nyc": "^11.1.0",
     "p-retry": "^1.0.0",
