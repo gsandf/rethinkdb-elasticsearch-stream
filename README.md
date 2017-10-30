@@ -39,11 +39,21 @@ await rethinkdbElasticsearchStream({
   backfill: true,
 
   // Connection details for an Elasticsearch instance
-  elasticsearch: { host: '127.0.0.1', port: 9200 },
+  elasticsearch: {
+    host: '127.0.0.1',
+    port: 9200,
+    // (optional) protocol for connection (`http` or `https`).  Defaults to `http`.
+    protocol: 'http'
+  },
 
   // Connection details for the RethinkDB instance to be copied
   // See `rethinkdbdash` (https://github.com/neumino/rethinkdbdash) for all possible options.
-  rethinkdb: { host: '127.0.0.1', port: 28015 },
+  rethinkdb: {
+    host: '127.0.0.1',
+    port: 28015,
+    // (optional) protocol for connection (`http` or `https`).  Defaults to `http`.
+    protocol: 'http'
+  },
 
   // Tables to duplicate and watch for changes
   tables: [
