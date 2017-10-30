@@ -50,6 +50,9 @@ await rethinkdbElasticsearchStream({
     {
       // Database containing table
       db: 'megacorp',
+      // (optional) Type field for Elasticsearch.  This is similar to a "table" in
+      // RethinkDB, and is the second portion of the URL path (index/db is the first).
+      esType: 'webUsers',
       // (optional) ID field.  If specified, changes are upserted into Elasticsearch
       // Note: Elasticsearch-specific field names cannot be used (e.g. `_id`)
       // If that's important to you, open an issue.
