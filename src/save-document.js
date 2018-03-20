@@ -1,5 +1,6 @@
 import axios from 'axios';
 import elasticsearchPath from './elasticsearch-path';
+import { _delete } from '.';
 
 /**
  * Replicate a document in Elasticsearch
@@ -41,6 +42,10 @@ function pushDocument(baseURL, db, doc, idKey, table) {
     id: idKey ? doc[idKey] : null,
     table
   });
+
+  if (doc._delete === _delete) {
+    return axios.delete(path, { baseURL });
+  }
 
   if (idKey) {
     return axios.put(path, doc, { baseURL });
