@@ -1,5 +1,6 @@
 import test from 'ava';
 import nock from 'nock';
+import { _delete } from '.';
 import saveDocument from './save-document';
 
 const testData = {
@@ -11,7 +12,7 @@ const testData = {
   transform: null
 };
 
-const elasticsearchInsertMock = (uri, requestBody) => {
+const elasticsearchCallMock = (uri, requestBody) => {
   const [_index, _type, _id] = uri.slice(1).split('/');
   return { _id, _index, _type };
 };
@@ -19,7 +20,7 @@ const elasticsearchInsertMock = (uri, requestBody) => {
 test('saveDocument: upsert a document to Elasticsearch', async t => {
   nock(testData.baseURL)
     .put('/cool-people/ent/123')
-    .reply(200, elasticsearchInsertMock);
+    .reply(200, elasticsearchCallMock);
 
   const response = await saveDocument(testData);
   t.is(response.status, 200);
@@ -33,7 +34,7 @@ test('saveDocument: upsert a document to Elasticsearch', async t => {
 test('saveDocument: insert a document without an id', async t => {
   nock(testData.baseURL)
     .post('/cool-people/ent')
-    .reply(200, elasticsearchInsertMock);
+    .reply(200, elasticsearchCallMock);
 
   const newTestData = { ...testData };
   delete newTestData.idKey;
@@ -65,12 +66,28 @@ test('saveDocument: transform document before saving', async t => {
   t.is(response.status, 200);
 });
 
+test('saveDocument: remove document from Elasticsearch', async t => {
+  nock(testData.baseURL)
+    .delete('/cool-people/ent/123')
+    .reply(200, elasticsearchCallMock);
+
+  const response = await saveDocument({
+    ...testData,
+    transform: ({ document }) => ({
+      ...document,
+      _delete
+    })
+  });
+
+  t.is(response.status, 200);
+});
+
 test('saveDocument: change es type', async t => {
   const esType = 'test';
 
   nock(testData.baseURL)
     .put(`/cool-people/${esType}/123`)
-    .reply(200, elasticsearchInsertMock);
+    .reply(200, elasticsearchCallMock);
 
   const response = await saveDocument({
     ...testData,
@@ -125,7 +142,7 @@ test('saveDocument: insert array of documents', async t => {
   nock(testData.baseURL)
     .put(/\/cool-people\/ent\/\d{3}/)
     .times(2)
-    .reply(200, elasticsearchInsertMock);
+    .reply(200, elasticsearchCallMock);
 
   const responses = await saveDocument(arrayTest);
   responses.map((response, i) => {

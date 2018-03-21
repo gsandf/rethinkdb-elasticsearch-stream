@@ -71,3 +71,9 @@ async function ensureConnections() {
 }
 
 export default init;
+
+/**
+ * This can be imported and used in a transform to indicate that the document
+ * should be deleted from Elasticsearch
+ */
+export const _delete = Symbol('delete');
