@@ -15,11 +15,12 @@ function watchTable(r, { db, table, ...properties }) {
     .toStream();
 
   return dataStream.pipe(
-    objectStream(async ({ new_val: chunk }, enc, cb) => {
+    objectStream(async ({ new_val: chunk, old_val: oldDocument }, enc, cb) => {
       try {
         await saveDocument({
           db,
           document: chunk,
+          oldDocument,
           table,
           ...properties
         });
