@@ -60,6 +60,25 @@ await rethinkdbElasticsearchStream({
     {
       // Database containing table
       db: 'megacorp',
+      // (optional) Handle when a document is deleted in Rethink
+      // This is detected when the new value for a document is null
+      // If this is not specified, a DELETE is sent to Elasticsearch for the
+      // id of the old value
+      deleteTransform: async ({db, document, oldDocument, table }) => {
+        if (await someImportantCheck()) {
+          return oldDocument;
+        }
+
+        // this is the default behavior for a delete
+        return {
+          // import { _delete } from 'rethinkdb-elasticsearch-stream';
+          //
+          // this is a special Symbol that tells the library that this should
+          // be a DELETE. It can also be used in the regular transform function
+          _delete
+          id: oldDocument.id,
+        }
+      },
       // (optional) Type field for Elasticsearch.  This is similar to a "table" in
       // RethinkDB, and is the second portion of the URL path (index/db is the first).
       esType: 'webUsers',
@@ -73,9 +92,9 @@ await rethinkdbElasticsearchStream({
       // This can be either a function or a Promise.
       // If `null` or `undefined` is returned, the document is not saved.
       // `db` and `table` are specified for convenience
-      transform: async ({ db, document, table }) => {
+      transform: async ({ db, document, oldDocument, table }) => {
         await doSomethingImportant()
-        return document
+        return document;
       }
     }
   ],

@@ -1,6 +1,6 @@
 {
   "name": "rethinkdb-elasticsearch-stream",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "build/index.js",
   "repository": "https://github.com/gsandf/rethinkdb-elasticsearch-stream",
   "author": "Blake Knight <bknight@gsandf.com> (http://blakek.me/)",
