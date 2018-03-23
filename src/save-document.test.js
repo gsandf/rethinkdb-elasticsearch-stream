@@ -82,6 +82,63 @@ test('saveDocument: remove document from Elasticsearch', async t => {
   t.is(response.status, 200);
 });
 
+test('saveDocument: default behavior for deleted doc is DELETE', async t => {
+  nock(testData.baseURL)
+    .delete('/cool-people/ent/123')
+    .reply(200, elasticsearchCallMock);
+
+  // no deleteTransform is provided, so since document is null, it should send
+  // a DELETE request to ES by default
+  const response = await saveDocument({
+    ...testData,
+    document: null,
+    oldDocument: testData.document
+  });
+
+  t.is(response.status, 200);
+});
+
+test('saveDocument: deleteTransform can return a doc that gets PUT', async t => {
+  t.plan(2);
+  nock(testData.baseURL)
+    .put('/cool-people/ent/123')
+    .reply(200, elasticsearchCallMock);
+
+  const response = await saveDocument({
+    ...testData,
+    deleteTransform({ document, oldDocument }) {
+      t.is(document, null);
+      return oldDocument;
+    },
+    document: null,
+    oldDocument: testData.document
+  });
+
+  t.is(response.status, 200);
+});
+
+test('saveDocument: deleteTransform can return a doc that gets DELETEd', async t => {
+  t.plan(2);
+  nock(testData.baseURL)
+    .delete('/cool-people/ent/123')
+    .reply(200, elasticsearchCallMock);
+
+  const response = await saveDocument({
+    ...testData,
+    deleteTransform({ document, oldDocument }) {
+      t.is(document, null);
+      return {
+        ...oldDocument,
+        _delete
+      };
+    },
+    document: null,
+    oldDocument: testData.document
+  });
+
+  t.is(response.status, 200);
+});
+
 test('saveDocument: change es type', async t => {
   const esType = 'test';
 

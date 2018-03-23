@@ -13,15 +13,33 @@ import { _delete } from '.';
 async function saveDocument({
   baseURL,
   db,
+  deleteTransform,
   document,
   esType,
   idKey,
+  oldDocument,
   table,
   transform
 }) {
-  // Transform the document if necessary
-  const documentToSave =
-    transform != null ? await transform({ db, document, table }) : document;
+  let documentToSave;
+
+  // document will be null if the doc was deleted in Rethink
+  if (document === null) {
+    documentToSave =
+      deleteTransform != null
+        ? await deleteTransform({ db, document, oldDocument, table })
+        // if a deleteTransform isn't provided, the default behavior is to just
+        // delete the document from elastic search
+        : {
+          ...oldDocument,
+          _delete
+        };
+  } else {
+    documentToSave =
+      transform != null
+        ? await transform({ db, document, oldDocument, table })
+        : document;
+  }
 
   if (Array.isArray(documentToSave)) {
     return Promise.all(
