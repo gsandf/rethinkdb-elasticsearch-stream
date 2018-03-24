@@ -26,7 +26,10 @@ function backfillTable(r, { db, esType, table, ...properties }) {
               ...properties
             });
           } catch (e) {
-            cb(e);
+            console.log(
+              `ES error for ${e.request.path} [${e.response.status}]`
+            );
+            cb();
           }
 
           cb();
