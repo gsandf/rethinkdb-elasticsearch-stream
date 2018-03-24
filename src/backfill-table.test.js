@@ -52,3 +52,32 @@ test('backfillTable: copies every row in table', async t => {
   expectedCalls.forEach(call => t.true(call.isDone()));
   await r.dbDrop(db);
 });
+
+test('can handle an error when saving to ES', async t => {
+  t.plan(3);
+
+  const db = 'backfillTableTest2';
+  const table = 'users';
+
+  await r.dbCreate(db);
+  await r.db(db).tableCreate(table);
+  await r
+    .db(db)
+    .table(table)
+    .insert(testData);
+
+  const expectedCalls = [
+    nock(baseURL)
+      .put(elasticsearchPath({ db, id: 1, table }))
+      .reply(200, elasticsearchInsertMock),
+    nock(baseURL)
+      .put(elasticsearchPath({ db, id: 2, table }))
+      .reply(404, elasticsearchInsertMock),
+    nock(baseURL)
+      .put(elasticsearchPath({ db, id: 3, table }))
+      .reply(200, elasticsearchInsertMock)
+  ];
+
+  await backfillTable(r, { baseURL, db, idKey: 'id', table });
+  expectedCalls.forEach(call => t.true(call.isDone()));
+});
