@@ -26,7 +26,7 @@ function backfillTable(r, { db, esType, table, ...properties }) {
               ...properties
             });
           } catch (e) {
-            console.log(`ES error: ${e}`);
+            console.log('ES error:', e);
           }
 
           cb();
