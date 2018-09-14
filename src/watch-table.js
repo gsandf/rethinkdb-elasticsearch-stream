@@ -1,4 +1,4 @@
-import { obj as objectStream } from 'through2';
+import setupChangefeed from 'rethinkdb-changefeed-reconnect';
 import saveDocument from './save-document';
 
 /**
@@ -8,28 +8,16 @@ import saveDocument from './save-document';
 * @param  {String}   table     The table in RethinkDB to stream updates from
 */
 function watchTable(r, { db, table, ...properties }) {
-  const dataStream = r
-    .db(db)
-    .table(table)
-    .changes()
-    .toStream();
-
-  return dataStream.pipe(
-    objectStream(async ({ new_val: chunk, old_val: oldDocument }, enc, cb) => {
-      try {
-        await saveDocument({
-          db,
-          document: chunk,
-          oldDocument,
-          table,
-          ...properties
-        });
-      } catch (e) {
-        cb(e);
-      }
-
-      cb();
-    })
+  setupChangefeed(
+    () =>
+      r
+        .db(db)
+        .table(table)
+        .changes(),
+    ({ new_val: document, old_val: oldDocument }) =>
+      saveDocument({ db, document, oldDocument, table, ...properties }),
+    err => console.error(err.stack),
+    { attemptDelay: 60000, maxAttempts: Infinity, silent: true }
   );
 }
 

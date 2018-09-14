@@ -53,6 +53,8 @@
   },
   "dependencies": {
     "axios": "^0.17.0",
+    "rethinkdb": "^2.3.3",
+    "rethinkdb-changefeed-reconnect": "^0.3.2",
     "rethinkdbdash": "^2.3.31",
     "through2": "^2.0.3"
   }
