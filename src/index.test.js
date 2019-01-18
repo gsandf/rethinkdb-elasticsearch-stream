@@ -53,7 +53,7 @@ test('if nothing provided to do, just verifies a connection to the databases', a
     elasticsearch: { ...elasticsearch, host: 'nonexistent-host' }
   };
 
-  await t.throws(elasticsearchStream(noESOptions));
+  await t.throwsAsync(elasticsearchStream(noESOptions));
 });
 
 test('can backfill tables from RethinkDB to elasticsearch', async t => {
@@ -112,14 +112,13 @@ test('can backfill tables from RethinkDB to elasticsearch', async t => {
     .table(tableName)
     .union(r.db(db2).table(tableName));
 
-  const expectedData = tests.map(
-    t =>
-      t.transform
-        ? t.transform({
-          ...t,
-          document: storedData.find(s => s[t.idKey] === t.document[t.idKey])
-        })
-        : t.document
+  const expectedData = tests.map(t =>
+    t.transform
+      ? t.transform({
+        ...t,
+        document: storedData.find(s => s[t.idKey] === t.document[t.idKey])
+      })
+      : t.document
   );
 
   const actualData = await Promise.all(tests.map(elasticsearchSource));
@@ -188,14 +187,13 @@ test('can add changes from RethinkDB to elasticsearch', async t => {
     .table(tableName)
     .union(r.db(db2).table(tableName));
 
-  const expectedData = tests.map(
-    t =>
-      t.transform
-        ? t.transform({
-          ...t,
-          document: storedData.find(s => s[t.idKey] === t.document[t.idKey])
-        })
-        : t.document
+  const expectedData = tests.map(t =>
+    t.transform
+      ? t.transform({
+        ...t,
+        document: storedData.find(s => s[t.idKey] === t.document[t.idKey])
+      })
+      : t.document
   );
 
   const actualData = await Promise.all(tests.map(elasticsearchSource));
