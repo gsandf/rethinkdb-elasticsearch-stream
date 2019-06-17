@@ -49,7 +49,7 @@
     "nock": "^9.2.3",
     "nyc": "^11.1.0",
     "p-retry": "^1.0.0",
-    "prettier-eslint-cli": "^4.2.1"
+    "prettier-eslint-cli": "^5.0.0"
   },
   "dependencies": {
     "axios": "^0.17.0",
