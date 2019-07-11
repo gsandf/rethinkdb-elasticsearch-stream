@@ -53,7 +53,7 @@ test('if nothing provided to do, just verifies a connection to the databases', a
     elasticsearch: { ...elasticsearch, host: 'nonexistent-host' }
   };
 
-  await t.throws(elasticsearchStream(noESOptions));
+  await t.throwsAsync(() => elasticsearchStream(noESOptions));
 });
 
 test('can backfill tables from RethinkDB to elasticsearch', async t => {
