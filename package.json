@@ -69,7 +69,7 @@
     "test:container": "docker-compose build && docker-compose run app yarn test -v; docker-compose down"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
+    "@babel/cli": "^7.6.3",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-decorators": "^7.0.0",
