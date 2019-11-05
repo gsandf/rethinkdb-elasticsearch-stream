@@ -88,7 +88,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/preset-env": "^7.7.0",
-    "@babel/register": "^7.4.4",
+    "@babel/register": "^7.7.0",
     "ava": "^2.2.0",
     "eslint": "^6.0.1",
     "eslint-config-gsandf": "^1.0.1",
