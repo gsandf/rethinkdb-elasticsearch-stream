@@ -4909,9 +4909,10 @@ rethinkdb-changefeed-reconnect@^0.3.2:
   dependencies:
     babel-runtime "^6.18.0"
 
-rethinkdb@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/rethinkdb/-/rethinkdb-2.3.3.tgz#3dc6586e22fa1dabee0d254e64bd0e379fad2f72"
+rethinkdb@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/rethinkdb/-/rethinkdb-2.4.0.tgz#281968b74935e7f1867deb6f344ecc11904646b0"
+  integrity sha512-zS0AmNgBeKWpskjhdn08v02C5AaWIc8EGP2FdcceViliO69IQgqEZkVwlzzkTgdgHwB++0pZLOYTxa+PYMkJKw==
   dependencies:
     bluebird ">= 2.3.2 < 3"
 
