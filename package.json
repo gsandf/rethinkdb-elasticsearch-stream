@@ -99,7 +99,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "rethinkdb": "^2.3.3",
+    "rethinkdb": "^2.4.2",
     "rethinkdb-changefeed-reconnect": "^0.3.2",
     "rethinkdbdash": "^2.3.31",
     "through2": "^3.0.1"
