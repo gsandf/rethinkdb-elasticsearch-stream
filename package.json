@@ -98,7 +98,7 @@
     "prettier-eslint-cli": "^5.0.0"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.19.1",
     "rethinkdb": "^2.3.3",
     "rethinkdb-changefeed-reconnect": "^0.3.2",
     "rethinkdbdash": "^2.3.31",
