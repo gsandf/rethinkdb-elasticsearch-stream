@@ -27,11 +27,15 @@ function elasticsearchPath({ db = '', id = '', table = '' } = {}) {
     return `/${db}`;
   }
 
+  /* 
+  * As of ES 6.0 you can only have 1 mapping per Indice. Therefore Indices must be unique for multiple tables in same DB
+  * see https://www.elastic.co/guide/en/elasticsearch/reference/6.0/removal-of-types.html
+  */
   if (id == null || id === '') {
-    return `/${db}/${table}`;
+    return `/${db}_${table}/${table}`;
   }
 
-  return `/${db}/${table}/${id}`;
+  return `/${db}_${table}/${table}/${id}`;
 }
 
 export default elasticsearchPath;
